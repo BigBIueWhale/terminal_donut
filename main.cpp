@@ -61,7 +61,7 @@ static void renderTorus(FrameBuffer& fb, float Ax, float Ay) {
     constexpr float R_major = 1.0f;  // center radius
     constexpr float R_minor = 0.5f;  // tube radius
     constexpr float K2 = 3.0f;       // camera distance
-    const float K1 = 0.9f * std::min(static_cast<float>(fb.h), static_cast<float>(fb.w) / 2.0f);    // projection scale for virtual buffer
+    const float K1 = 0.75f * std::min(static_cast<float>(fb.h), static_cast<float>(fb.w) / 2.0f);    // projection scale for virtual buffer
     constexpr float xCellAspect = 2.0f; // character cells are ~twice as tall as they are wide
 
     const Vec3 light = normalize({ -0.5f, 0.5f, -1.0f });
