@@ -5,6 +5,7 @@
 #include <thread>
 #include <algorithm>
 #include <cstring>
+#include <csignal>
 
 struct Vec3 {
     float x, y, z;
@@ -137,7 +138,13 @@ static void blitVirtualToCurses(const FrameBuffer& fb) {
     refresh();
 }
 
+static volatile sig_atomic_t g_shouldQuit = 0;
+static void handleSignal(int) { g_shouldQuit = 1; }
+
 int main() {
+    std::signal(SIGINT, handleSignal);
+    std::signal(SIGTERM, handleSignal);
+
     CursesSession term;
 
     // A slightly wide virtual buffer looks sharper when scaled up
@@ -161,8 +168,9 @@ int main() {
     const float spinY = 1.1f;  // rad/s
 
     while (true) {
+        if (g_shouldQuit) break;
+
         int ch = getch();
-        if (ch == 'q' || ch == 'Q') break;
 
         int curRows, curCols;
         getmaxyx(stdscr, curRows, curCols);
